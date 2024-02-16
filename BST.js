@@ -91,11 +91,27 @@ function deleteNode(value, root) {
     };
 };
 
+function findNode(value, root) {
+    if (root === null) { return null };
+
+    if (value < root.data) {
+        root = findNode(value, root.left);
+        return root;
+    } else if (value > root.data) {
+        root = findNode(value, root.right);
+        return root;
+    };
+
+    return root;
+};
+
 let test = tree([1,2,3,4,5,6,7]);
 
 console.log(insertNode(0, test));
 
 console.log(deleteNode(4, test));
+
+console.log(findNode(6, test));
 
 /*
 deleteNode(2, 4)
