@@ -105,13 +105,34 @@ function findNode(value, root) {
     return root;
 };
 
+function levelOrder(callback, root) {
+    if (root === null) { return };
+
+    let queue = [root];
+
+    while (queue[0]) {
+        callback(queue[0]);
+
+        if (root.left !== null) { queue.push(queue[0].left) };
+
+        if (root.right !== null) { queue.push(queue[0].right) };
+
+        queue.shift();
+    };
+};
+
 let test = tree([1,2,3,4,5,6,7]);
 
-console.log(insertNode(0, test));
+// console.log(insertNode(0, test));
 
-console.log(deleteNode(4, test));
+// console.log(deleteNode(4, test));
 
-console.log(findNode(6, test));
+// console.log(findNode(6, test));
+
+levelOrder(function (node){
+    console.log(node);
+
+}, test);
 
 /*
 deleteNode(2, 4)
