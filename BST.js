@@ -137,6 +137,14 @@ function inOrder(callback, root) {
     inOrder(callback, root.right);
 };
 
+function postOrder(callback, root) {
+    if (root === null) { return };
+
+    postOrder(callback, root.left);
+    postOrder(callback, root.right);
+    callback(root);
+};
+
 let test = tree([1,2,3,4,5,6,7]);
 
 // console.log(insertNode(0, test));
@@ -153,7 +161,11 @@ let test = tree([1,2,3,4,5,6,7]);
 //     console.log(node);
 // }, test);
 
-inOrder(function (node){
+// inOrder(function (node){
+//     console.log(node);
+// }, test);
+
+postOrder(function (node){
     console.log(node);
 }, test);
 
