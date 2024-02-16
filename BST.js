@@ -129,6 +129,14 @@ function preOrder(callback, root) {
     preOrder(callback, root.right);
 };
 
+function inOrder(callback, root) {
+    if (root === null) { return };
+
+    inOrder(callback, root.left);
+    callback(root);
+    inOrder(callback, root.right);
+};
+
 let test = tree([1,2,3,4,5,6,7]);
 
 // console.log(insertNode(0, test));
@@ -141,7 +149,11 @@ let test = tree([1,2,3,4,5,6,7]);
 //     console.log(node);
 // }, test);
 
-preOrder(function (node){
+// preOrder(function (node){
+//     console.log(node);
+// }, test);
+
+inOrder(function (node){
     console.log(node);
 }, test);
 
