@@ -33,7 +33,7 @@ function buildTree(arr) {
     return root;
 };
 
-function insert(value, root) {
+function insertNode(value, root) {
     //does nothing with duplicate numbers
     if (root === null) {
         root = node(value);
@@ -41,9 +41,9 @@ function insert(value, root) {
     };
 
     if (value < root.data) {
-        root.left = insert(value, root.left);
+        root.left = insertNode(value, root.left);
     } else if (value > root.data) {
-        root.right = insert(value, root.right);
+        root.right = insertNode(value, root.right);
     };
 
     return root;
@@ -93,7 +93,7 @@ function deleteNode(value, root) {
 
 let test = tree([1,2,3,4,5,6,7]);
 
-console.log(insert(0, test));
+console.log(insertNode(0, test));
 
 console.log(deleteNode(4, test));
 
