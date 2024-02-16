@@ -121,6 +121,14 @@ function levelOrder(callback, root) {
     };
 };
 
+function preOrder(callback, root) {
+    if (root === null) { return };
+
+    callback(root);
+    preOrder(callback, root.left);
+    preOrder(callback, root.right);
+};
+
 let test = tree([1,2,3,4,5,6,7]);
 
 // console.log(insertNode(0, test));
@@ -129,10 +137,24 @@ let test = tree([1,2,3,4,5,6,7]);
 
 // console.log(findNode(6, test));
 
-levelOrder(function (node){
-    console.log(node);
+// levelOrder(function (node){
+//     console.log(node);
+// }, test);
 
+preOrder(function (node){
+    console.log(node);
 }, test);
+
+/*
+preOrder:
+<root><left><right
+
+inOrder:
+<left><root><right>
+
+postOrder:
+<left><right><root>
+*/
 
 /*
 deleteNode(2, 4)
