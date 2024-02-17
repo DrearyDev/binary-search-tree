@@ -12,177 +12,197 @@ function node(value) {
 
 function tree(arr) {
     let root = buildTree(arr);
-    
-    return root;
-};
 
-function buildTree(arr) {
-    let array = mergeSort(arr);//sort the array
-    array = [...new Set(array)];//remove duplicate values
+    function buildTree(arr) {
+        let array = mergeSort(arr);//sort the array
+        array = [...new Set(array)];//remove duplicate values
 
-    let start = 0;
-    let end = array.length - 1;
-    let mid = Math.floor((array.length) / 2);
+        let start = 0;
+        let end = array.length - 1;
+        let mid = Math.floor((array.length) / 2);
 
-    if (start > end) { return null };
+        if (start > end) { return null };
 
-    let root = node(array[mid]);
-    root.left = buildTree([...array].splice(start, mid));//non-inclusive so mid isnt apart of array
-    root.right = buildTree([...array].splice(mid+1, end));//add one to avoid including mid
+        let root = node(array[mid]);
+        root.left = buildTree([...array].splice(start, mid));//non-inclusive so mid isnt apart of array
+        root.right = buildTree([...array].splice(mid+1, end));//add one to avoid including mid
 
-    return root;
-};
-
-function insertNode(value, root) {
-    //does nothing with duplicate numbers
-    if (root === null) {
-        root = node(value);
         return root;
     };
 
-    if (value < root.data) {
-        root.left = insertNode(value, root.left);
-    } else if (value > root.data) {
-        root.right = insertNode(value, root.right);
-    };
 
-    return root;
-};
 
-function deleteNode(value, root) {
-    if (root === null) { return root };
-
-    //recursively searching for node to delete
-    if (value < root.data) {
-        root.left = deleteNode(value, root.left);
-        return root;
-    } else if (value > root.data) {
-        root.right = deleteNode(value, root.right);
-        return root;
-    };
-
-    // --- at this point root = node to delete --- //
-
-    // if node to delete has no children
-    if (root.left === null && root.right === null) {
-        root = null;
-        return root;
-    } else {
-        let parent = root;
-        let child = root.right;
-
-        //get left most leaf of right child of node to delete
-        while (child.left !== null) {
-            parent = child;
-            child = child.left;
+    function insertNode(value, startNode=root) {
+        //does nothing with duplicate numbers
+        if (startNode === null) {
+            startNode = node(value);
+            return startNode;
         };
 
-        //get rid of the node thats replacing the root
-        if (child.data < parent.data) {
-            parent.left = null;
+        if (value < startNode.data) {
+            startNode.left = insertNode(value, startNode.left);
+        } else if (value > startNode.data) {
+            startNode.right = insertNode(value, startNode.right);
+        };
+
+        return startNode;
+    };
+
+
+
+    function deleteNode(value, startNode=root) {
+        if (startNode === null) { return startNode };
+
+        //recursively searching for node to delete
+        if (value < startNode.data) {
+            startNode.left = deleteNode(value, startNode.left);
+            return startNode;
+        } else if (value > startNode.data) {
+            startNode.right = deleteNode(value, startNode.right);
+            return startNode;
+        };
+
+        // --- at this point root = node to delete --- //
+
+        // if node to delete has no children
+        if (startNode.left === null && startNode.right === null) {
+            startNode = null;
+            return startNode;
         } else {
-            parent.right = null;
+            let parent = startNode;
+            let child = startNode.right;
+
+            //get left most leaf of right child of node to delete
+            while (child.left !== null) {
+                parent = child;
+                child = child.left;
+            };
+
+            //get rid of the node thats replacing the root
+            if (child.data < parent.data) {
+                parent.left = null;
+            } else {
+                parent.right = null;
+            };
+
+            //replace the root with value of left most leaf of right child
+            startNode.data = child.data;
+
+            return startNode;
+        };
+    };
+
+
+
+    function findNode(value, startNode=root) {
+        if (startNode === null) { return null };
+
+        if (value < startNode.data) {
+            startNode = findNode(value, startNode.left);
+            return startNode;
+        } else if (value > startNode.data) {
+            startNode = findNode(value, startNode.right);
+            return startNode;
         };
 
-        //replace the root with value of left most leaf of right child
-        root.data = child.data;
-
-        return root;
-    };
-};
-
-function findNode(value, root) {
-    if (root === null) { return null };
-
-    if (value < root.data) {
-        root = findNode(value, root.left);
-        return root;
-    } else if (value > root.data) {
-        root = findNode(value, root.right);
-        return root;
+        return startNode;
     };
 
-    return root;
-};
 
-function levelOrder(callback, root) {
-    if (root === null) { return };
 
-    let queue = [root];
+    function levelOrder(callback, startNode=root) {
+        if (startNode === null) { return };
 
-    while (queue[0]) {
-        callback(queue[0]);
+        let queue = [startNode];
 
-        if (root.left !== null) { queue.push(queue[0].left) };
+        while (queue[0]) {
+            callback(queue[0]);
 
-        if (root.right !== null) { queue.push(queue[0].right) };
+            if (startNode.left !== null) { queue.push(queue[0].left) };
 
-        queue.shift();
+            if (startNode.right !== null) { queue.push(queue[0].right) };
+
+            queue.shift();
+        };
     };
-};
 
-function preOrder(callback, root) {
-    if (root === null) { return };
 
-    callback(root);
-    preOrder(callback, root.left);
-    preOrder(callback, root.right);
-};
 
-function inOrder(callback, root) {
-    if (root === null) { return };
+    function preOrder(callback, startNode=root) {
+        if (startNode === null) { return };
 
-    inOrder(callback, root.left);
-    callback(root);
-    inOrder(callback, root.right);
-};
-
-function postOrder(callback, root) {
-    if (root === null) { return };
-
-    postOrder(callback, root.left);
-    postOrder(callback, root.right);
-    callback(root);
-};
-
-function height(node) {
-    if (node === null) { return -1 };
-
-    let leftHeight = height(node.left);
-    let rightHeight = height(node.right);
-
-    if (leftHeight > rightHeight) {
-        return leftHeight + 1;
-    } else {
-        return rightHeight + 1
+        callback(startNode);
+        preOrder(callback, startNode.left);
+        preOrder(callback, startNode.right);
     };
+
+
+
+    function inOrder(callback, startNode=root) {
+        if (startNode === null) { return };
+
+        inOrder(callback, startNode.left);
+        callback(startNode);
+        inOrder(callback, startNode.right);
+    };
+
+
+
+    function postOrder(callback, startNode=root) {
+        if (startNode === null) { return };
+
+        postOrder(callback, startNode.left);
+        postOrder(callback, startNode.right);
+        callback(startNode);
+    };
+
+
+
+    function height(node=root) {
+        if (node === null) { return -1 };
+
+        let leftHeight = height(node.left);
+        let rightHeight = height(node.right);
+
+        if (leftHeight > rightHeight) {
+            return leftHeight + 1;
+        } else {
+            return rightHeight + 1
+        };
+    };
+    
+    return { root, insertNode, deleteNode, findNode, levelOrder, preOrder, inOrder, postOrder,
+    height };
 };
 
 let test = tree([1,2,3,4,5,6,7]);
 
-console.log(height(test));
+console.log(test.root);
 
-// console.log(insertNode(0, test));
+console.log(test.insertNode(0));
 
-// console.log(deleteNode(4, test));
+console.log(test.deleteNode(0));
 
-// console.log(findNode(6, test));
+console.log(test.findNode(3));
 
-// levelOrder(function (node){
-//     console.log(node);
-// }, test);
+test.levelOrder(function(node){
+    console.log(node.data);
+});
 
-// preOrder(function (node){
-//     console.log(node);
-// }, test);
+test.preOrder(function(node){
+    console.log(node);
+});
 
-// inOrder(function (node){
-//     console.log(node);
-// }, test);
+test.inOrder(function(node){
+    console.log(node.data);
+});
 
-// postOrder(function (node){
-//     console.log(node);
-// }, test);
+test.postOrder(function(node){
+    console.log(node);
+});
+
+console.log(test.height());
+
 
 /*
 preOrder:
