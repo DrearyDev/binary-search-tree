@@ -145,7 +145,22 @@ function postOrder(callback, root) {
     callback(root);
 };
 
+function height(node) {
+    if (node === null) { return -1 };
+
+    let leftHeight = height(node.left);
+    let rightHeight = height(node.right);
+
+    if (leftHeight > rightHeight) {
+        return leftHeight + 1;
+    } else {
+        return rightHeight + 1
+    };
+};
+
 let test = tree([1,2,3,4,5,6,7]);
+
+console.log(height(test));
 
 // console.log(insertNode(0, test));
 
@@ -165,9 +180,9 @@ let test = tree([1,2,3,4,5,6,7]);
 //     console.log(node);
 // }, test);
 
-postOrder(function (node){
-    console.log(node);
-}, test);
+// postOrder(function (node){
+//     console.log(node);
+// }, test);
 
 /*
 preOrder:
