@@ -170,38 +170,56 @@ function tree(arr) {
             return rightHeight + 1
         };
     };
+
+    
+
+    function depth(node, startNode=root) {
+        if (startNode === node) { return 0 };
+
+        let count;
+
+        if (node > startNode) {
+            count = depth(node, startNode.right) + 1;
+        } else {
+            count = depth(node, startNode.left) + 1;
+        };
+
+        return count;
+    };
     
     return { root, insertNode, deleteNode, findNode, levelOrder, preOrder, inOrder, postOrder,
-    height };
+    height, depth };
 };
 
 let test = tree([1,2,3,4,5,6,7]);
 
-console.log(test.root);
+console.log(test.depth(test.root.left.left));
 
-console.log(test.insertNode(0));
+// console.log(test.root);
 
-console.log(test.deleteNode(0));
+// console.log(test.insertNode(0));
 
-console.log(test.findNode(3));
+// console.log(test.deleteNode(0));
 
-test.levelOrder(function(node){
-    console.log(node.data);
-});
+// console.log(test.findNode(3));
 
-test.preOrder(function(node){
-    console.log(node);
-});
+// test.levelOrder(function(node){
+//     console.log(node.data);
+// });
 
-test.inOrder(function(node){
-    console.log(node.data);
-});
+// test.preOrder(function(node){
+//     console.log(node);
+// });
 
-test.postOrder(function(node){
-    console.log(node);
-});
+// test.inOrder(function(node){
+//     console.log(node.data);
+// });
 
-console.log(test.height());
+// test.postOrder(function(node){
+//     console.log(node);
+// });
+
+// console.log(test.height());
 
 
 /*
