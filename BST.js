@@ -186,14 +186,31 @@ function tree(arr) {
 
         return count;
     };
+
+    
+
+    function isBalanced(node=root) {
+        let leftHeight = height(node.left);
+        let rightHeight = height(node.right);
+
+        if (leftHeight > rightHeight) {
+            rightHeight++;
+        } else if (rightHeight > leftHeight) {
+            leftHeight++;
+        };
+
+        return (leftHeight === rightHeight);
+    };
     
     return { root, insertNode, deleteNode, findNode, levelOrder, preOrder, inOrder, postOrder,
-    height, depth };
+    height, depth, isBalanced };
 };
 
 let test = tree([1,2,3,4,5,6,7]);
 
-console.log(test.depth(test.root.left.left));
+console.log(test.isBalanced());
+
+// console.log(test.depth(test.root.left.left));
 
 // console.log(test.root);
 
