@@ -13,6 +13,8 @@ function node(value) {
 function tree(arr) {
     let root = buildTree(arr);
 
+    const getRoot = () => { return root };
+
     function buildTree(arr) {
         let array = mergeSort(arr);//sort the array
         array = [...new Set(array)];//remove duplicate values
@@ -201,14 +203,40 @@ function tree(arr) {
 
         return (leftHeight === rightHeight);
     };
+
+
+
+    function reBalance() {
+        let keys = [];
+
+        inOrder(function(node) {
+            keys.push(node.data);
+        });
+
+        root = buildTree(keys);
+
+        return root;
+    };
     
-    return { root, insertNode, deleteNode, findNode, levelOrder, preOrder, inOrder, postOrder,
-    height, depth, isBalanced };
+    return { getRoot, insertNode, deleteNode, findNode, levelOrder, preOrder, inOrder, postOrder,
+    height, depth, isBalanced, reBalance };
 };
 
 let test = tree([1,2,3,4,5,6,7]);
 
-console.log(test.isBalanced());
+// to make tree unbalanced
+test.insertNode(8);
+test.insertNode(9);
+console.log(test.isBalanced());//false
+
+// rebalance the tree
+test.reBalance()
+
+console.log(test.isBalanced());//true
+
+console.log(test.getRoot());
+
+// console.log(test.isBalanced());
 
 // console.log(test.depth(test.root.left.left));
 
