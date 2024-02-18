@@ -222,19 +222,21 @@ function tree(arr) {
     height, depth, isBalanced, reBalance };
 };
 
-let test = tree([1,2,3,4,5,6,7]);
+export { tree };
 
-// to make tree unbalanced
-test.insertNode(8);
-test.insertNode(9);
-console.log(test.isBalanced());//false
+// let test = tree([1,2,3,4,5,6,7]);
 
-// rebalance the tree
-test.reBalance()
+// // to make tree unbalanced
+// test.insertNode(8);
+// test.insertNode(9);
+// console.log(test.isBalanced());//false
 
-console.log(test.isBalanced());//true
+// // rebalance the tree
+// test.reBalance()
 
-console.log(test.getRoot());
+// console.log(test.isBalanced());//true
+
+// console.log(test.getRoot());
 
 // console.log(test.isBalanced());
 
